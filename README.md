@@ -128,3 +128,12 @@ npm run dev
 網站「資料管理」頁匯入的文字只暫存在當前分頁。按「下載 laws.json」後，檢查檔案，再更新 site/data/laws.json 並 Commit，才會成為正式資料。這個流程不需要將 GitHub Token 暴露在公開前端。
 
 > 注意：目前範例《首都論壇帖務條例》沿用示例原文，效力狀態設為「待核實」。展示版的立法研究只執行條文關鍵字檢索，不會把命中結果宣稱為 AI 分析、法規衝突判定或全庫完整審計。
+
+
+## 前端直接寫入 GitHub
+
+GitHub Pages 本身是靜態託管，無法在伺服器端保管寫入憑證。展示版的「資料管理」頁因此採用 GitHub Fine-grained Personal Access Token，由 Repository 擁有者在前端手動輸入，直接透過 GitHub Contents API 更新 site/data/laws.json。
+
+建議權限：只選取 annynn1990/wme-legislation-studio 一個 Repository；Repository permissions 的 Contents 設為 Read and write；Metadata 使用預設唯讀。Token 只在目前頁面記憶體中使用，不寫入 localStorage、Cookie、URL 或 Repository，成功提交後欄位會清空。重新整理頁面後需要重新輸入。請勿把 Token 貼到聊天、Issue 或任何公開位置。
+
+儲存前會先讀取 GitHub 最新 laws.json，將本次頁面新增資料與遠端現有法規依 ID 合併，再更新檔案；若發生版本衝突，請重新整理頁面再提交。成功後 GitHub Pages workflow 自動部署更新。
