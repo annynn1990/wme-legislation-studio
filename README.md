@@ -1,32 +1,32 @@
 # 黃名帝國立法研究室（WME Legislation Studio）
 
-一套用來匯入大量法規、建立可追溯的條文資料庫、分析跨法規衝突與重複規範，並依立法目標提出整合法案草案的工作台。
+面向黃名帝國的法律資料庫與立法研究工作台：匯入法律全文、拆分條文、保存來源、檢索相關規定，再按立法目標產生有依據可追溯的法案草稿。
 
-> 本專案是立法研究及起草輔助工具，不是自動立法機關。AI 的每項法律判斷與草案均須由立法者核對；系統不得把未檢索到的條文、虛構的法源或模型自行生成的條號當成現行法律。
+**本專案是立法研究及起草輔助工具，不是自動立法機關。** AI 建議不構成正式法律決定。系統不得把未檢索到的條文、虛構法源或模型自行生成的條號當成現行法律。
 
-## 第一版功能
+## 已實作功能
 
-- 法律全文匯入：支援直接貼上 TXT／Markdown／可搜尋 PDF／DOCX／HTML 文字；亦支援多份 TXT、MD 文件批次匯入。
-- 條文切分：辨識「第○條」及常見中文條號，保留原始全文、章節與條號。
-- 法規及版本管理：保存制定／修正版本、生效狀態與來源，不覆寫歷史版本。
-- 條文檢索：以 PostgreSQL 全文及相似詞檢索相關法條，提供來源追溯。
-- 立法研究：分析衝突、重複、漏洞、歧義、權限不明及程序缺漏。
-- 草案產生：產生立法架構、逐條條文、立法理由、法律效果、引用來源與待決政策問題。
-- 完整草案複製：可複製不含比較標記的法案全文。
+- 法律全文直接貼上或批次匯入 TXT、MD、可搜尋 PDF、DOCX、HTML。
+- 常見中文「第○條」格式切分及章節標記。
+- 法規版本效力標記：現行、歷史、草案、廢止、待確認。
+- PostgreSQL 法規資料、版本、條文及分析紀錄。
+- 管理密碼登入及 HttpOnly 簽章 Cookie。
+- 依立法目標檢索已匯入的現行條文。
+- AI 分析衝突、重複、漏洞、歧義、權限及程序問題。
+- 產生建議章節、逐條草案、立法理由、法律效果及待決問題。
+- 對模型回傳的來源 ID 做白名單核驗，並可複製完整草案。
 
 ## 技術架構
 
-- Next.js App Router + React + TypeScript
-- PostgreSQL + pgvector + pg_trgm
-- Node.js API routes
+- Next.js 16 App Router、React 19、TypeScript
+- PostgreSQL 17、pg_trgm、pgvector（向量欄位已預留）
 - OpenAI-compatible Chat Completions API（可接 Vercel AI Gateway 或其他相容服務）
+- PDF 文字抽取：pdf-parse；DOCX：Mammoth
 - Docker Compose
 
-## 快速啟動
+## 本機啟動
 
-需要 Docker Desktop 與 Node.js 20.9+。
-
-1. 複製專案並建立環境檔：
+需求：Docker Desktop、Node.js 20.9 或更新版本。
 
 ```bash
 git clone https://github.com/annynn1990/wme-legislation-studio.git
@@ -34,61 +34,70 @@ cd wme-legislation-studio
 cp .env.example .env
 ```
 
-2. 編輯 `.env`，設定管理密碼、簽章密鑰、資料庫與模型 API：
+編輯 `.env`：
 
 ```env
 ADMIN_PASSWORD=請換成長且隨機的密碼
-AUTH_SECRET=請換成至少32字元的隨機密鑰
-DATABASE_URL=postgres://postgres:postgres@db:5432/legislation
-AI_BASE_URL=https://ai-gateway.vercel.sh/v1
+AUTH_SECRET=至少32字元的隨機密鑰
 AI_API_KEY=你的模型服務金鑰
-AI_MODEL=請填入模型服務目前支援的模型ID
+AI_MODEL=模型供應商目前支援的模型ID
 ```
 
-3. 啟動：
+啟動：
 
 ```bash
 docker compose up --build -d
 ```
 
-4. 開啟 http://localhost:3000 。
+瀏覽器開啟 http://localhost:3000，使用 `ADMIN_PASSWORD` 登入。
 
-## 本機開發
+查看服務：
 
 ```bash
-cp .env.example .env
-docker compose up -d db
-npm install
-npm run db:migrate
-npm run dev
+docker compose ps
+docker compose logs -f web
 ```
 
-## 法規資料原則
+## AI 設定
 
-每部法律由「法規基本資料 → 法規版本 → 條文」組成。版本需標記為現行、歷史、草案、廢止或待確認。只有被明確標記為現行的版本才能預設進入現行法分析；未確認效力的資料不可當作現行法。
+預設使用 OpenAI 相容 API。Vercel AI Gateway 可使用：
 
-## 「最佳法案」的評估
+- `AI_BASE_URL=https://ai-gateway.vercel.sh/v1`
+- `AI_API_KEY`（或 `AI_GATEWAY_API_KEY`）
+- `AI_MODEL`：請填入帳戶當下可用的模型 ID
 
-不存在脫離政策選擇的唯一最佳法案。系統會依下列維度列出建議與取捨：
+不設定 AI 金鑰時，法律匯入與查閱仍可使用，立法分析會提示設定 AI 服務。
 
-1. 憲制與法規位階一致性
-2. 權限及授權依據明確性
-3. 法規內容一致性
-4. 程序完整性與可執行性
-5. 法律明確性及權利影響
-6. 最小必要修法與轉換成本
+## 法規匯入
+
+每份文件建立一筆法規及一個版本。系統抽取文字、切分條文，並保留全文及來源檔名。支援 TXT、MD、PDF、DOCX、HTML；掃描圖片型 PDF 尚未支援 OCR。特殊條號格式請人工抽查。
+
+不同版本應分別匯入並標註效力狀態。只有標記為「現行有效」的版本會預設進入 AI 分析；歷史版本不可誤當現行法。
+
+## 「最佳法案」評估原則
+
+不存在脫離政策選擇的唯一最佳法案。系統應同時評估：
+1. 憲制及法規位階一致性
+2. 權限與授權依據明確性
+3. 跨法規內容一致性
+4. 程序完整性及可執行性
+5. 法律明確性與權利影響
+6. 最小必要修法及制度轉換成本
 7. 每條草案的來源可追溯性
 
-## 目前限制
+## 重要限制
 
-- 第一版以單一管理者作為內部工作台；正式公開部署前必須完成登入、權限、HTTPS、備份與安全檢查。
-- 條文切分依常見中文條號格式，表格、附表、圖片型 PDF 與特殊編號仍須人工抽查。
-- AI 分析採檢索增強方式，不等於已完整審核全庫。每次分析均應確認相關法規已匯入且版本效力正確。
-- 不提供法律效力的自動最終判定；歷史法規、憲法位階及授權關係均需立法者確認。
+- 現階段使用關鍵字檢索，不代表全庫完整審計；未被檢索到的相關法條不會自動進入本次 AI 分析。
+- pgvector 欄位已預留，但尚未接入 embedding 生成與語意檢索。
+- 匯入 API 在請求內處理；大量或大型文件建議分批匯入。背景佇列、OCR、全庫逐條審計及多人審議列為後續版本。
+- 系統不自動判定法律效力、法規位階或授權鏈。正式審議前須核對原始法律、版本、生效日期及相關上位法。
+- 生產部署前應設置 HTTPS、強密碼、正式資料庫備份、上傳大小限制及存取監控。
 
 ## 開發指令
 
 ```bash
+npm install
 npm run typecheck
 npm run build
+npm run dev
 ```
