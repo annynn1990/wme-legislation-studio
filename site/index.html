@@ -1,59 +1,157 @@
 <!doctype html>
-<html lang="zh-Hant"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17283b"><meta name="description" content="黃名帝國立法工作室：法規資料庫、條文檢索與立法研究。">
-<title>黃名帝國立法工作室｜WME Legislation Studio</title><link rel="stylesheet" href="./styles.css?v=20261102-fix1">
-</head><body>
-<header class="topbar"><a class="brand" href="./"><span class="brand-seal">WME</span><span class="brand-name"><strong>黃名帝國立法工作室</strong><small>WONGMING EMPIRE · LEGISLATION STUDIO</small></span></a><div class="topbar-right"><span class="repo-status"><i></i> GITHUB REPOSITORY MODE</span><a class="repo-link" href="https://github.com/annynn1990/wme-legislation-studio" target="_blank" rel="noopener">檢視 Repository ↗</a></div></header>
-<main class="page-shell">
-<section class="hero"><div class="hero-copy"><div class="eyebrow"><span class="eyebrow-line"></span> CENTRAL LEGISLATIVE WORKSPACE</div><h1>讓每一條法律，<br><em>回到完整的制度之中。</em></h1><p>集中保存法規原文與版本，檢索條文依據，辨識制度交界，再以清楚的來源紀錄規劃新法。</p><div class="hero-actions"><button class="button button-light" data-open-tab="laws">瀏覽法規資料庫 <span>→</span></button><button class="button button-outline" data-open-tab="research">開始立法研究</button></div></div><div class="hero-aside" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-seal"><span>W</span><small>WONGMING<br>EMPIRE</small></div><div class="hero-caption">LAW · ORDER · INSTITUTION</div></div><div class="hero-index">WME / LS <span>—</span> 01</div></section>
-<section class="metric-grid"><article class="metric-card"><div class="metric-label">已建檔法規 <span>01 / CORPUS</span></div><strong id="stat-laws">—</strong><p>Repository 內的法規資料</p></article><article class="metric-card"><div class="metric-label">拆分條文 <span>02 / PROVISIONS</span></div><strong id="stat-articles">—</strong><p>可逐條檢索及引用</p></article><article class="metric-card"><div class="metric-label">確認現行 <span>03 / IN FORCE</span></div><strong id="stat-current">—</strong><p>只計已確認為現行的版本</p></article><article class="metric-card metric-card-accent"><div class="metric-label">待核實版本 <span>04 / REVIEW</span></div><strong id="stat-review">—</strong><p>效力狀態尚待人工核對</p></article></section>
-<div class="workspace"><aside class="sidebar"><div class="sidebar-label">工作區 / WORKSPACE</div><nav class="side-nav" aria-label="工作區導覽"><button class="nav-item active" data-tab="overview"><span class="nav-icon">⌂</span><span>總覽</span><kbd>01</kbd></button><button class="nav-item" data-tab="laws"><span class="nav-icon">▤</span><span>法規資料庫</span><kbd>02</kbd></button><button class="nav-item" data-tab="research"><span class="nav-icon">⌕</span><span>立法研究</span><kbd>03</kbd></button><button class="nav-item" data-tab="data"><span class="nav-icon">⇧</span><span>資料管理</span><kbd>04</kbd></button></nav><div class="sidebar-rule"></div><div class="sidebar-label">資料來源 / SOURCE</div><div class="source-panel"><span class="source-dot"></span><strong>GitHub Repository</strong><small>annynn1990 / wme-legislation-studio</small><a href="https://github.com/annynn1990/wme-legislation-studio/tree/main/site/data" target="_blank" rel="noopener">查看法律資料夾 ↗</a></div><div class="sidebar-note"><span>!</span><p>目前為靜態展示版。資料以 Git 內的檔案為準，不會在瀏覽器中暗中儲存或覆寫 Repository。</p></div></aside>
-<div class="content-area">
-<section class="view active" id="view-overview"><div class="section-heading"><div><div class="eyebrow dark">SYSTEM OVERVIEW / 01</div><h2>立法工作總覽</h2><p>從法規保存開始，建立可追溯的法律體系。</p></div><span class="build-label"><i></i> STATIC PREVIEW</span></div>
-<div class="overview-grid"><article class="surface main-overview"><div class="surface-heading"><div><span class="kicker">LEGAL CORPUS</span><h3>法規收錄狀態</h3></div><button class="text-button" data-open-tab="laws">進入資料庫 →</button></div><div id="overview-law-list" class="overview-law-list"><div class="loading">正在讀取 Repository 法律資料…</div></div></article>
-<article class="surface workflow-card"><span class="kicker">LEGISLATIVE PROCESS</span><h3>立法研究流程</h3><ol class="process-list"><li class="process-done"><span>01</span><div><b>保存法規原文</b><small>以文件及版本為基礎</small></div></li><li class="process-done"><span>02</span><div><b>拆分條文與來源</b><small>每條保留原始出處</small></div></li><li><span>03</span><div><b>檢查法規關係</b><small>衝突、重複、漏洞與權限</small></div></li><li><span>04</span><div><b>規劃與起草新法</b><small>逐條引用可回查法源</small></div></li></ol></article></div>
-<div class="bottom-grid"><article class="surface note-card"><div class="note-symbol">§</div><div><span class="kicker">SOURCE-FIRST PRINCIPLE</span><h3>先有法源，再有結論。</h3><p>所有研究結果都應回到具體條文。未檢索到的法律，不得被當成不存在；尚未核實效力的文件，不得冒充現行法。</p></div></article><article class="surface action-card"><span class="kicker">QUICK ACCESS</span><h3>下一步</h3><button class="quick-link" data-open-tab="data"><span>＋</span> 加入法律文件 <b>→</b></button><button class="quick-link" data-open-tab="research"><span>⌕</span> 建立立法研究 <b>→</b></button></article></div></section>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17283b">
+<meta name="description" content="黃名帝國國會修法助手，協助議員定位法條、編輯修正內容及整理修法草案。">
+<title>黃名帝國國會修法助手｜WME Legislative Assistant</title>
+<link rel="stylesheet" href="./styles.css?v=parliament-01">
+</head>
+<body>
+<header class="topbar">
+ <a class="brand" href="./">
+  <span class="brand-seal">WME</span>
+  <span class="brand-text"><strong>黃名帝國國會修法助手</strong><small>WONGMING EMPIRE · LEGISLATIVE ASSISTANT</small></span>
+ </a>
+ <nav class="top-nav" aria-label="主要導覽">
+  <button class="top-nav-item active" data-view="workspace">修法工作台</button>
+  <button class="top-nav-item" data-view="library">法規查閱</button>
+ </nav>
+ <a class="repo-link" href="https://github.com/annynn1990/wme-legislation-studio" target="_blank" rel="noopener">專案資料 ↗</a>
+</header>
 
-<section class="view" id="view-laws"><div class="section-heading"><div><div class="eyebrow dark">LAW LIBRARY / 02</div><h2>法規資料庫</h2><p>瀏覽法規版本、原文及逐條條文，保留可追溯來源。</p></div><span class="count-label" id="law-count-label">0 份法規</span></div><div class="library-toolbar"><label class="search-box"><span>⌕</span><input id="law-search" type="search" placeholder="搜尋法規名稱、條文內容或關鍵字…"></label><select id="law-status-filter" aria-label="按效力狀態篩選"><option value="all">所有狀態</option><option value="current">現行有效</option><option value="draft">草案</option><option value="historical">歷史版本</option><option value="repealed">已廢止</option><option value="unknown">待核實</option></select></div><div class="library-layout"><div class="law-list-panel"><div class="panel-caption">法規清單 <span id="law-result-count">0</span></div><div id="law-list" class="law-list"></div></div><div class="law-detail-panel" id="law-detail"><div class="empty-state"><span>§</span><h3>選擇一份法規</h3><p>法規全文及逐條內容會顯示在這裡。</p></div></div></div></section>
+<main class="shell">
+ <section class="welcome">
+  <div class="welcome-copy">
+   <div class="eyebrow"><span></span> PARLIAMENTARY LEGISLATIVE DESK</div>
+   <h1>讓修法，從問題開始。</h1>
+   <p>選擇法律、指出需要改善的地方，逐條修改並整理成可供國會審議的修正草案。</p>
+  </div>
+  <div class="welcome-stat">
+   <span>法律資料庫</span>
+   <strong id="law-total">—</strong>
+   <small>份已收錄法律</small>
+  </div>
+ </section>
 
-<section class="view" id="view-research"><div class="section-heading"><div><div class="eyebrow dark">LEGISLATIVE RESEARCH / 03</div><h2>立法研究</h2><p>先從已收錄的原文找出可回查條文，再決定研究方向。</p></div><span class="api-label"><i></i> AI API 尚未連接</span></div><div class="research-layout"><form class="surface research-form" id="research-form"><span class="kicker">RESEARCH BRIEF</span><h3>建立研究任務</h3><label class="form-field"><span>研究／法案名稱</span><input id="research-title" value="立法整合研究" required></label><label class="form-field"><span>立法目標 <b>*</b></span><textarea id="research-objective" rows="5" required placeholder="例如：整合首都論壇帖文管理規範，釐清發帖人權利、版權處理及主管機關權限。"></textarea><small>請具體描述希望解決的制度問題。</small></label><label class="form-field"><span>政策原則</span><textarea id="research-policy" rows="3" placeholder="例如：保留既有制度、保障合理言論及申訴權利、明確規範行政權限。"></textarea></label><label class="form-field"><span>起草偏好</span><textarea id="research-preferences" rows="3" placeholder="例如：採正式繁體中文法律語體；優先修正而非整部推翻。"></textarea></label><button class="button button-primary" type="submit">檢索 Repository 條文 <span>→</span></button><p class="form-footnote">本按鈕執行本地關鍵字檢索，不會呼叫 AI，也不會將檢索預覽冒充法律分析。</p></form><div class="research-output" id="research-output"><div class="surface output-placeholder"><div class="placeholder-mark">⌕</div><span class="kicker">SOURCE TRACEABILITY</span><h3>研究結果會在這裡呈現</h3><p>提交研究目標後，系統會檢索已收錄的法規資料，列出命中的原文、條號與來源檔案。</p><div class="placeholder-rule"></div><small>目前不產生未經法源支持的法律結論。</small></div></div></div></section>
+ <div class="view active" id="view-workspace">
+  <div class="section-title">
+   <div><span class="eyebrow dark">AMENDMENT WORKSPACE</span><h2>修法工作台</h2><p>不必先研究系統操作，直接開始處理要修改的法律。</p></div>
+   <span class="step-hint">選法規 → 說明問題 → 編輯修正案</span>
+  </div>
 
-<section class="view" id="view-data">
-<div class="section-heading">
- <div><div class="eyebrow dark">ADD TO LEGAL LIBRARY / 04</div><h2>新增法律</h2><p>只要輸入名稱、貼上全文，系統就會幫你整理並保存。</p></div>
- <span class="connection-pill" id="github-connection-status"><i></i> 尚未連接 GitHub</span>
-</div>
-<form class="surface law-entry-card" id="law-entry-form">
- <div class="entry-intro"><span class="entry-icon">§</span><div><b>新增一份法律</b><small>每份法律會獨立保存原文與拆分後的條文，不會覆蓋其他法律。</small></div></div>
- <label class="simple-field"><span>法律名稱</span><input id="import-title" required placeholder="例如：黃名帝國公民法"></label>
- <label class="simple-field"><span>法律全文</span><textarea id="import-text" rows="15" required placeholder="請在這裡貼上完整法律內容……&#10;&#10;例如：&#10;第一章　總則&#10;第一條　本法得引稱為……&#10;第二條　本法適用於……"></textarea><small>支援直接貼上整份法律。系統會自動辨識「第一章」、「第一條」等格式。</small></label>
- <div class="article-preview" id="article-preview"><span class="preview-mark">§</span><span>輸入法律全文後，會在這裡顯示辨識到的條文數量。</span></div>
- <details class="advanced-options">
-  <summary>更多設定 <span>（可不填，預設為待核實）</span></summary>
-  <label class="simple-field"><span>法規編號（選填）</span><input id="import-reference" placeholder="例如：黃名帝國法例第二十章"></label>
-  <label class="simple-field"><span>版本狀態</span><select id="import-status"><option value="unknown">待核實（建議預設）</option><option value="current">現行有效（已核實）</option><option value="historical">歷史版本</option><option value="draft">草案</option><option value="repealed">已廢止</option></select></label>
- </details>
- <div id="save-message" class="inline-message" hidden></div>
- <button class="button button-primary save-law-button" id="save-law-button" type="submit">新增並儲存法律 <span>→</span></button>
- <p class="entry-footnote">首次使用需要連接 GitHub。之後在同一個頁面期間，不必重複授權。</p>
-</form>
-<div class="simple-help"><b>法律會保存在哪裡？</b><p>儲存後會直接寫入 GitHub 法律資料庫，網站隨後自動更新。原文及每一條拆分結果都會一併保存。</p><a href="https://github.com/annynn1990/wme-legislation-studio/tree/main/site/data" target="_blank" rel="noopener">查看 GitHub 法律資料庫 ↗</a></div>
-<div class="connect-overlay" id="github-connect-dialog" hidden>
- <div class="connect-dialog" role="dialog" aria-modal="true" aria-labelledby="connect-title">
-  <button class="dialog-close" id="close-github-dialog" type="button" aria-label="關閉">×</button>
-  <span class="kicker">ONE-TIME CONNECTION</span>
-  <h3 id="connect-title">連接 GitHub</h3>
-  <p>這是第一次儲存法律，需要授權工作室將資料寫入你的法律 Repository。</p>
-  <div class="connect-steps"><span>1</span><div><b>建立授權碼</b><small>只選擇 <code>wme-legislation-studio</code> 這個 Repository。</small></div></div>
-  <div class="connect-steps"><span>2</span><div><b>開啟 Contents 權限</b><small>設定為 <code>Read and write</code>。</small></div></div>
-  <a class="token-create-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">前往 GitHub 建立授權碼 ↗</a>
-  <label class="simple-field token-field"><span>貼上 GitHub 授權碼</span><input id="github-token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…" /></label>
-  <div id="connect-message" class="inline-message" hidden></div>
-  <button class="button button-primary connect-submit" id="connect-github-button" type="button">連接並繼續儲存 <span>→</span></button>
-  <p class="token-privacy">授權碼只在目前頁面記憶體中使用，不會儲存到瀏覽器或程式碼。重新整理頁面後需重新連接。</p>
+  <div class="work-grid">
+   <section class="panel request-panel">
+    <div class="panel-heading"><span class="panel-number">01</span><div><h3>告訴工作室，你想修改什麼</h3><p>先選法律，再描述要解決的問題。</p></div></div>
+
+    <form id="amend-form">
+     <label class="field">
+      <span>選擇要修改的法律</span>
+      <select id="law-select" required><option value="">正在載入法律資料…</option></select>
+     </label>
+
+     <div class="field-row">
+      <label class="field">
+       <span>修法方式</span>
+       <select id="change-type">
+        <option value="amend">修改現有條文</option>
+        <option value="add">新增條文</option>
+        <option value="repeal">刪除現有條文</option>
+       </select>
+      </label>
+      <label class="field" id="article-field">
+       <span>要處理的條文</span>
+       <select id="article-select"><option value="">請先選擇法律</option></select>
+      </label>
+      <label class="field hidden" id="new-number-field">
+       <span>新增條號</span>
+       <input id="new-article-number" placeholder="例如：第十三條">
+      </label>
+     </div>
+
+     <label class="field">
+      <span>你認為現行法律有什麼問題？</span>
+      <textarea id="amend-objective" rows="5" required placeholder="例如：現行條文禁止已有人回覆的帖文刪除，但沒有處理個人資料外洩、錯誤資訊或違法內容的例外情況。"></textarea>
+      <small>用一般語言說明即可，不需要先寫成法律用語。</small>
+     </label>
+
+     <button class="primary-button full-button" type="submit">開始編輯修正案 <span>→</span></button>
+    </form>
+
+    <div class="source-note" id="source-note">
+     <span class="note-icon">§</span>
+     <div><b>法條來源</b><p>選擇法律後，工作室會顯示該法的條文，修改內容會保留對應條號。</p></div>
+    </div>
+   </section>
+
+   <section class="panel draft-panel">
+    <div class="panel-heading"><span class="panel-number muted-number">02</span><div><h3>本次修法草案</h3><p>你加入的修正項目會集中整理在這裡。</p></div></div>
+    <div id="draft-empty" class="empty-draft">
+     <div class="empty-symbol">§</div>
+     <b>尚未建立修正項目</b>
+     <p>先在左側選擇法律並說明修改方向。</p>
+    </div>
+    <div id="draft-list" class="draft-list"></div>
+    <div class="draft-actions" id="draft-actions" hidden>
+     <button class="secondary-button" id="copy-draft" type="button">複製修正草案</button>
+     <button class="secondary-button" id="download-draft" type="button">下載草案</button>
+     <button class="quiet-button" id="clear-draft" type="button">清空</button>
+    </div>
+   </section>
+  </div>
+
+  <section class="panel editor-panel hidden" id="editor-panel">
+   <div class="editor-head">
+    <div><span class="eyebrow dark">ARTICLE EDITOR</span><h3 id="editor-title">編輯修正條文</h3><p id="editor-subtitle"></p></div>
+    <button class="quiet-button" id="cancel-edit" type="button">取消</button>
+   </div>
+   <div class="compare-grid">
+    <div class="compare-box current-box">
+     <div class="compare-label"><span class="dot dot-current"></span> 現行條文</div>
+     <div id="current-text" class="current-text"></div>
+    </div>
+    <div class="compare-box proposed-box" id="proposed-box">
+     <label class="compare-label" for="proposed-text"><span class="dot dot-proposed"></span> 修正後條文</label>
+     <textarea id="proposed-text" rows="9" placeholder="在這裡輸入修正後的條文內容……"></textarea>
+    </div>
+   </div>
+   <label class="field reason-field">
+    <span>修正理由</span>
+    <textarea id="reason-text" rows="3" placeholder="說明為何需要這項修改，以及希望達成什麼效果。"></textarea>
+   </label>
+   <div class="editor-footer">
+    <small>現行條文會保留作比較；新增項目只會進入草案，不會直接更改現行法律。</small>
+    <button class="primary-button" id="add-to-draft" type="button">加入本次修正草案 <span>＋</span></button>
+   </div>
+  </section>
+
+  <div class="bottom-hint">
+   <span>注意</span>
+   這裡產生的是議會審議用的「修正草案」，不會直接改變已公布法律。草案通過後，再由管理者更新正式法規文本。
+  </div>
+  <div class="ai-note"><span class="ai-mark">✦</span><p><b>後續 AI 輔助</b>：目前先提供法條查閱、逐條修正及草案整理。跨法律衝突檢查、AI 修法建議及自動起草，尚待接入安全的 AI API。</p></div>
  </div>
-</div>
-</section>
-<footer class="footer"><div><span class="footer-seal">WME</span><b>黃名帝國立法工作室</b></div><p>立法研究輔助工具 · AI 建議不等於法律效力 · 最終決定由立法者作出</p><a href="https://github.com/annynn1990/wme-legislation-studio" target="_blank" rel="noopener">SOURCE CODE ↗</a></footer>
-</div></div></main><div class="toast" id="toast" role="status" aria-live="polite"></div><script src="./app.js?v=20261102-fix1" defer></script></body></html>
+
+ <div class="view" id="view-library">
+  <div class="section-title">
+   <div><span class="eyebrow dark">LAW LIBRARY</span><h2>法規查閱</h2><p>閱讀已收錄法律與條文；選定條文後可直接帶入修法工作台。</p></div>
+   <span class="step-hint" id="library-count">— 份法律</span>
+  </div>
+  <div class="library-toolbar">
+   <input id="library-search" type="search" placeholder="搜尋法律名稱或條文內容…">
+   <select id="library-law-filter"><option value="">所有法律</option></select>
+  </div>
+  <div id="library-list" class="library-list"><div class="empty-draft">正在載入法規…</div></div>
+ </div>
+
+ <footer class="footer">
+  <span class="footer-seal">WME</span><b>黃名帝國國會修法助手</b>
+  <span>協助議員整理修法想法與條文草案</span>
+  <a href="https://github.com/annynn1990/wme-legislation-studio" target="_blank" rel="noopener">SOURCE CODE ↗</a>
+ </footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="./app.js?v=parliament-01" defer></script>
+</body>
+</html>
