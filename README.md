@@ -125,7 +125,7 @@ npm run dev
 
 ### 法律資料保存流程
 
-網站「資料管理」頁可直接輸入法律全文。使用者需建立只授權 `annynn1990/wme-legislation-studio`、Contents Read and write 的 Fine-grained Token，在頁面輸入後按「儲存至 GitHub」；頁面會讀取遠端最新 laws.json，只追加尚未提交的新法規，再以 GitHub Contents API 建立 Commit。Token 僅保留在目前頁面記憶體，不寫入 localStorage、Cookie 或 Repository，提交成功後欄位清空。建議設定短效期，不要在聊天或公開位置分享 Token。
+網站「資料管理」頁提供單一法規輸入表單，填寫名稱及貼上全文後按「新增並儲存法律」。首次使用會彈出 GitHub 授權視窗；建立只授權 `annynn1990/wme-legislation-studio`、Contents Read and write 的 Fine-grained Token，驗證後會在目前頁面記憶體保持連線。頁面會讀取遠端最新 laws.json 並追加新法律，再以 GitHub Contents API 建立 Commit。Token 不寫入 localStorage、Cookie 或 Repository；重新整理頁面後需重新連接。建議設定短效期，不要在聊天或公開位置分享 Token。
 
 > 注意：目前範例《首都論壇帖務條例》沿用示例原文，效力狀態設為「待核實」。展示版的立法研究只執行條文關鍵字檢索，不會把命中結果宣稱為 AI 分析、法規衝突判定或全庫完整審計。
 

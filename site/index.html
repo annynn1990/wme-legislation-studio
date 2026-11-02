@@ -19,26 +19,41 @@
 
 <section class="view" id="view-research"><div class="section-heading"><div><div class="eyebrow dark">LEGISLATIVE RESEARCH / 03</div><h2>立法研究</h2><p>先從已收錄的原文找出可回查條文，再決定研究方向。</p></div><span class="api-label"><i></i> AI API 尚未連接</span></div><div class="research-layout"><form class="surface research-form" id="research-form"><span class="kicker">RESEARCH BRIEF</span><h3>建立研究任務</h3><label class="form-field"><span>研究／法案名稱</span><input id="research-title" value="立法整合研究" required></label><label class="form-field"><span>立法目標 <b>*</b></span><textarea id="research-objective" rows="5" required placeholder="例如：整合首都論壇帖文管理規範，釐清發帖人權利、版權處理及主管機關權限。"></textarea><small>請具體描述希望解決的制度問題。</small></label><label class="form-field"><span>政策原則</span><textarea id="research-policy" rows="3" placeholder="例如：保留既有制度、保障合理言論及申訴權利、明確規範行政權限。"></textarea></label><label class="form-field"><span>起草偏好</span><textarea id="research-preferences" rows="3" placeholder="例如：採正式繁體中文法律語體；優先修正而非整部推翻。"></textarea></label><button class="button button-primary" type="submit">檢索 Repository 條文 <span>→</span></button><p class="form-footnote">本按鈕執行本地關鍵字檢索，不會呼叫 AI，也不會將檢索預覽冒充法律分析。</p></form><div class="research-output" id="research-output"><div class="surface output-placeholder"><div class="placeholder-mark">⌕</div><span class="kicker">SOURCE TRACEABILITY</span><h3>研究結果會在這裡呈現</h3><p>提交研究目標後，系統會檢索已收錄的法規資料，列出命中的原文、條號與來源檔案。</p><div class="placeholder-rule"></div><small>目前不產生未經法源支持的法律結論。</small></div></div></div></section>
 
-<section class="view" id="view-data"><div class="section-heading"><div><div class="eyebrow dark">CORPUS MANAGEMENT / 04</div><h2>資料管理</h2><p>直接輸入法律全文，拆分條文後即可提交到 GitHub 保存。</p></div><span class="repo-chip">保存位置：<code>site/data/laws.json</code></span></div><div class="data-layout"><article class="surface import-panel"><span class="kicker">IMPORT LEGAL TEXT</span><h3>加入法律文件</h3><p class="subtle">可匯入 TXT、MD 或符合本系統格式的 JSON。PDF／DOCX 請先轉成可搜尋文字。</p><label class="form-field"><span>法規名稱</span><input id="import-title" placeholder="例如：黃名帝國某某條例"></label><label class="form-field"><span>版本狀態</span><select id="import-status"><option value="unknown">待核實（預設）</option><option value="current">現行有效（已核實）</option><option value="historical">歷史版本</option><option value="draft">草案</option><option value="repealed">已廢止</option></select></label><label class="form-field"><span>貼上法律全文</span><textarea id="import-text" rows="10" placeholder="請貼上完整法律原文……&#10;&#10;可使用「第一章　總綱」「第一條　……」等常見格式。"></textarea></label><label class="file-drop" for="import-file"><span class="file-icon">⇧</span><b>選擇 TXT / MD / JSON 檔案</b><small id="file-name">或直接貼上文字</small><input id="import-file" type="file" accept=".txt,.md,.json,text/plain,application/json"></label><button class="button button-primary" id="add-law-button" type="button">加入預覽清單 <span>＋</span></button><div id="import-message" class="inline-message" hidden></div></article>
-<div class="data-side"><article class="surface export-panel">
-<span class="kicker">DIRECT GITHUB SAVE</span><h3>直接儲存到 GitHub</h3>
-<p>輸入只授權此 Repository 的 Fine-grained Token。提交成功後，網站法律資料會自動更新。</p>
-<label class="form-field"><span>GitHub Fine-grained Token</span><input id="github-token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…" /></label>
-<button class="button button-primary" id="save-github-button" type="button">儲存至 GitHub <span>↑</span></button>
-<button class="text-button clear-token" id="clear-github-token" type="button">清除憑證</button>
-<div id="save-message" class="inline-message" hidden></div>
-<div class="file-path"><span>寫入目標</span><code>site/data/laws.json</code></div>
-<hr class="soft-rule">
-<button class="button button-secondary" id="export-button" type="button">另存 JSON 備份 <span>↓</span></button>
-</article><article class="surface git-guide">
-<span class="kicker">TOKEN SETUP</span><h3>一次性設定授權</h3>
-<ol>
-<li>在 GitHub 建立 Fine-grained personal access token。</li>
-<li>Repository access 選 Only select repositories，並選 <code>wme-legislation-studio</code>。</li>
-<li>Repository permissions 將 <code>Contents</code> 設為 <b>Read and write</b>；Metadata 保持預設唯讀。</li>
-<li>建立後把 Token 貼入左側欄位。它只在目前頁面記憶體使用，重新整理後須重新輸入。</li>
-</ol>
-<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">建立 Fine-grained Token ↗</a>
-</article></div></div><div class="data-warning"><b>資料保存說明</b><p>法律內容先在目前頁面預覽；按「儲存至 GitHub」後，會直接提交到 Repository。Token 不會寫入 localStorage 或 Git 檔案，成功後欄位會清空。不要把 Token 貼到聊天或其他網站。</p></div></section>
+<section class="view" id="view-data">
+<div class="section-heading">
+ <div><div class="eyebrow dark">ADD TO LEGAL LIBRARY / 04</div><h2>新增法律</h2><p>只要輸入名稱、貼上全文，系統就會幫你整理並保存。</p></div>
+ <span class="connection-pill" id="github-connection-status"><i></i> 尚未連接 GitHub</span>
+</div>
+<form class="surface law-entry-card" id="law-entry-form">
+ <div class="entry-intro"><span class="entry-icon">§</span><div><b>新增一份法律</b><small>每份法律會獨立保存原文與拆分後的條文，不會覆蓋其他法律。</small></div></div>
+ <label class="simple-field"><span>法律名稱</span><input id="import-title" required placeholder="例如：黃名帝國公民法"></label>
+ <label class="simple-field"><span>法律全文</span><textarea id="import-text" rows="15" required placeholder="請在這裡貼上完整法律內容……&#10;&#10;例如：&#10;第一章　總則&#10;第一條　本法得引稱為……&#10;第二條　本法適用於……"></textarea><small>支援直接貼上整份法律。系統會自動辨識「第一章」、「第一條」等格式。</small></label>
+ <div class="article-preview" id="article-preview"><span class="preview-mark">§</span><span>輸入法律全文後，會在這裡顯示辨識到的條文數量。</span></div>
+ <details class="advanced-options">
+  <summary>更多設定 <span>（可不填，預設為待核實）</span></summary>
+  <label class="simple-field"><span>法規編號（選填）</span><input id="import-reference" placeholder="例如：黃名帝國法例第二十章"></label>
+  <label class="simple-field"><span>版本狀態</span><select id="import-status"><option value="unknown">待核實（建議預設）</option><option value="current">現行有效（已核實）</option><option value="historical">歷史版本</option><option value="draft">草案</option><option value="repealed">已廢止</option></select></label>
+ </details>
+ <div id="save-message" class="inline-message" hidden></div>
+ <button class="button button-primary save-law-button" id="save-law-button" type="submit">新增並儲存法律 <span>→</span></button>
+ <p class="entry-footnote">首次使用需要連接 GitHub。之後在同一個頁面期間，不必重複授權。</p>
+</form>
+<div class="simple-help"><b>法律會保存在哪裡？</b><p>儲存後會直接寫入 GitHub 法律資料庫，網站隨後自動更新。原文及每一條拆分結果都會一併保存。</p><a href="https://github.com/annynn1990/wme-legislation-studio/tree/main/site/data" target="_blank" rel="noopener">查看 GitHub 法律資料庫 ↗</a></div>
+<div class="connect-overlay" id="github-connect-dialog" hidden>
+ <div class="connect-dialog" role="dialog" aria-modal="true" aria-labelledby="connect-title">
+  <button class="dialog-close" id="close-github-dialog" type="button" aria-label="關閉">×</button>
+  <span class="kicker">ONE-TIME CONNECTION</span>
+  <h3 id="connect-title">連接 GitHub</h3>
+  <p>這是第一次儲存法律，需要授權工作室將資料寫入你的法律 Repository。</p>
+  <div class="connect-steps"><span>1</span><div><b>建立授權碼</b><small>只選擇 <code>wme-legislation-studio</code> 這個 Repository。</small></div></div>
+  <div class="connect-steps"><span>2</span><div><b>開啟 Contents 權限</b><small>設定為 <code>Read and write</code>。</small></div></div>
+  <a class="token-create-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">前往 GitHub 建立授權碼 ↗</a>
+  <label class="simple-field token-field"><span>貼上 GitHub 授權碼</span><input id="github-token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…" /></label>
+  <div id="connect-message" class="inline-message" hidden></div>
+  <button class="button button-primary connect-submit" id="connect-github-button" type="button">連接並繼續儲存 <span>→</span></button>
+  <p class="token-privacy">授權碼只在目前頁面記憶體中使用，不會儲存到瀏覽器或程式碼。重新整理頁面後需重新連接。</p>
+ </div>
+</div>
+</section>
 <footer class="footer"><div><span class="footer-seal">WME</span><b>黃名帝國立法工作室</b></div><p>立法研究輔助工具 · AI 建議不等於法律效力 · 最終決定由立法者作出</p><a href="https://github.com/annynn1990/wme-legislation-studio" target="_blank" rel="noopener">SOURCE CODE ↗</a></footer>
 </div></div></main><div class="toast" id="toast" role="status" aria-live="polite"></div><script src="./app.js" defer></script></body></html>
