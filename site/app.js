@@ -17,7 +17,7 @@ function termsFrom(text){var chunks=String(text||"").match(/[\u3400-\u9fff]{2,}|
 function runResearch(e){e.preventDefault();var title=el("research-title").value.trim()||"立法研究",objective=el("research-objective").value.trim(),policy=el("research-policy").value.trim(),prefs=el("research-preferences").value.trim();if(objective.length<6){toast("請再具體描述立法目標。");return;}var terms=termsFrom([objective,policy,prefs].join(" ")),current=[],pending=[];laws.forEach(function(l){(l.articles||[]).forEach(function(a){var hay=[l.title,a.chapter,a.number,a.heading,a.content].join(" ").toLowerCase(),hits=terms.filter(function(x){return hay.indexOf(x.toLowerCase())>=0;}),item={law:l,article:a,hits:hits};if(hits.length)(l.validityStatus==="current"?current:pending).push(item);});});current.sort(function(a,b){return b.hits.length-a.hits.length;});pending.sort(function(a,b){return b.hits.length-a.hits.length;});var cards=current.length?current.slice(0,30).map(function(x){return '<article class="result-card"><span class="match-score">命中 '+x.hits.length+' 個檢索詞</span><h4>'+esc(x.law.title)+'／'+esc(x.article.number||"未編號")+'</h4><p>'+esc(x.article.content)+'</p><span class="source-citation">'+esc(x.law.legalReference||x.law.title)+' · '+esc(x.article.chapter||"未分類")+'</span><span class="source-citation">資料：'+esc(x.law.sourceFile||"Repository")+'</span></article>';}).join(""):'<div class="surface output-placeholder"><div class="placeholder-mark">—</div><h3>現行法規中沒有命中條文</h3><p>這只表示目前的關鍵字檢索沒有找到符合項目，不代表相關法律不存在。請調整關鍵字，或先補齊法規資料。</p></div>';var pendingNote=pending.length?'<div class="research-caution">另有 '+pending.length+' 條相似內容位於「非現行／待核實」版本。這些內容不納入現行條文結果，正式研究前須先核對效力。</div>':"";var summary='本地檢索詞：'+(terms.length?terms.map(esc).join("、"):"未抽取到可用關鍵字")+'。本次現行條文命中 '+current.length+' 條。';el("research-output").innerHTML='<article class="surface result-header"><span class="kicker">RESEARCH RETRIEVAL / LOCAL SEARCH</span><h3>'+esc(title)+'</h3><p>依輸入的目標、政策原則及起草偏好，對已標示為「現行有效」的條文執行關鍵字檢索。</p><div class="result-summary">'+summary+'</div></article>'+(cards)+pendingNote+'<div class="research-caution">研究範圍限制：這是字詞命中清單，不是 AI 法律意見、法規衝突判定或全庫完整審計。待 AI API 安全接入後，才會加入來源 ID 驗證的分析與草案生成。</div>';toast("檢索完成：現行條文命中 "+current.length+" 條。");}
 function parseTextLaw(title,text,status,source){var clean=String(text||"").replace(/\r\n?/g,"\n").trim(),titleMatch=clean.match(/《([^》]+)》/),lawTitle=title.trim()||(titleMatch?titleMatch[1]:"未命名法規");var chapters=Array.from(clean.matchAll(/(?:^|\n)\s*(第[〇零一二三四五六七八九十百千\d]+章[^\n]*)/g));function chapterAt(pos){var value="";chapters.forEach(function(m){if(m.index<=pos)value=m[1].trim();});return value;}var re=/(?:^|\n)\s*(第[〇零一二三四五六七八九十百千\d]+條(?:之[〇零一二三四五六七八九十百千\d]+)?)[、.． ]?\s*/g,ms=Array.from(clean.matchAll(re));var articles=ms.length?ms.map(function(m,i){return{id:"article-"+(i+1),chapter:chapterAt(m.index),number:m[1],heading:"",content:clean.slice(m.index+m[0].length,i+1<ms.length?ms[i+1].index:clean.length).trim()};}):[{id:"article-full-text",chapter:"全文",number:"全文",heading:"",content:clean}];return{id:"temp-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),title:lawTitle,legalReference:"",jurisdiction:"黃名帝國",category:"待分類",validityStatus:status||"unknown",versionLabel:"匯入暫存",effectiveDate:null,sourceFile:"site/data/laws.json",sourceFileName:source||"本次瀏覽器匯入",sourceNote:"此文件由瀏覽器本次工作階段匯入，尚未提交到 Repository。請核對法規名稱、原文、版本及效力狀態。",originalText:clean,articles:articles};}
 function normalizeLaw(x){if(!x||typeof x!=="object"||!x.title||!Array.isArray(x.articles))throw new Error("JSON 法律資料格式不正確。");return{id:x.id||("temp-"+Date.now()+"-"+Math.random().toString(36).slice(2,8)),title:String(x.title),legalReference:String(x.legalReference||""),jurisdiction:String(x.jurisdiction||"黃名帝國"),category:String(x.category||"待分類"),validityStatus:statusLabels[x.validityStatus]?x.validityStatus:"unknown",versionLabel:String(x.versionLabel||"匯入暫存"),effectiveDate:x.effectiveDate||null,sourceFile:String(x.sourceFile||"本次 JSON 匯入"),sourceNote:String(x.sourceNote||"已匯入瀏覽器暫存，尚未提交到 Repository。"),originalText:String(x.originalText||""),articles:x.articles.map(function(a,i){return{id:String(a.id||("temp-article-"+i)),chapter:String(a.chapter||""),number:String(a.number||a.articleNumber||"未編號"),heading:String(a.heading||""),content:String(a.content||a.text||"")};})};}
-function addLaw(l){if(laws.some(function(x){return x.title===l.title&&x.sourceFile===l.sourceFile;}))l.id="temp-"+Date.now()+"-"+Math.random().toString(36).slice(2,8);laws.unshift(l);selectedLawId=l.id;refresh();setTab("laws");toast("已加入目前分頁暫存，尚未寫入 GitHub。");}
+function addLaw(l){if(laws.some(function(x){return x.title===l.title&&x.sourceFile===l.sourceFile;}))l.id="temp-"+Date.now()+"-"+Math.random().toString(36).slice(2,8);laws.unshift(l);selectedLawId=l.id;refresh();toast("已加入預覽清單；可直接提交到 GitHub。");}
 function refresh(){renderStats();renderOverview();if(activeTab==="laws")renderLawList();}
 function exportJson(){var payload={schemaVersion:1,jurisdiction:"黃名帝國",laws:laws},blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="laws.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);toast("已匯出 laws.json；請檢查後提交到 GitHub。");}
 async function readFile(file){var text=await file.text();if(file.name.toLowerCase().endsWith(".json")){var parsed=JSON.parse(text),items=Array.isArray(parsed)?parsed:parsed.laws;if(!Array.isArray(items)||!items.length)throw new Error("JSON 中找不到 laws 陣列。");items.forEach(function(x){addLaw(normalizeLaw(x));});toast("JSON 匯入完成。");return;}addLaw(parseTextLaw(el("import-title").value,text,el("import-status").value,file.name));}
@@ -30,7 +30,7 @@ function encodeBase64Utf8(value){
  return btoa(binary);
 }
 function decodeBase64Utf8(value){
- var binary=atob(String(value||"").replace(/\\s/g,"")),bytes=new Uint8Array(binary.length);
+ var binary=atob(String(value||"").replace(/\s/g,"")),bytes=new Uint8Array(binary.length);
  for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
  return new TextDecoder().decode(bytes);
 }
@@ -47,14 +47,18 @@ async function saveToGithub(){
   if(!readResponse.ok)throw new Error((remote.message||"無法讀取 GitHub 檔案") +"（HTTP "+readResponse.status+"）");
   var remoteData=JSON.parse(decodeBase64Utf8(remote.content));
   var remoteLaws=Array.isArray(remoteData.laws)?remoteData.laws:[];
-  var byId=new Map();
-  remoteLaws.forEach(function(law,index){byId.set(String(law.id||("remote-"+index)),law);});
-  laws.forEach(function(law,index){byId.set(String(law.id||("local-"+index)),law);});
-  var mergedLaws=Array.from(byId.values());
+  var remoteIds=new Set(remoteLaws.map(function(law,index){return String(law.id||("remote-"+index));}));
+  var additions=laws.filter(function(law,index){return !remoteIds.has(String(law.id||("local-"+index)));});
+  if(!additions.length){
+   message.textContent="沒有尚未提交的新法律。現有 Repository 資料不會被重複覆寫。";
+   toast("目前沒有新的法律需要提交。");
+   return;
+  }
+  var mergedLaws=remoteLaws.concat(additions);
   var payload={schemaVersion:1,jurisdiction:"黃名帝國",laws:mergedLaws};
   var putResponse=await fetch(endpoint,{method:"PUT",headers:headers,body:JSON.stringify({
    message:"Add or update laws from Legislation Studio",
-   content:encodeBase64Utf8(JSON.stringify(payload,null,2)+"\\n"),
+   content:encodeBase64Utf8(JSON.stringify(payload,null,2)+"\n"),
    sha:remote.sha,
    branch:"main"
   })});
