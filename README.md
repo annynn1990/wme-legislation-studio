@@ -101,3 +101,30 @@ npm run typecheck
 npm run build
 npm run dev
 ```
+
+
+## GitHub Pages 展示版（Repository-first）
+
+本專案新增 site/ 靜態展示版，前端不需要 PostgreSQL、Render 或網站伺服器：
+
+- 網站由 GitHub Pages 提供，前端原始碼位於 site/。
+- 法律資料由 site/data/laws.json 載入；原始法律檔案仍保存在 Git。
+- site/app.js 提供法規清單、條文瀏覽、關鍵字檢索、文字匯入暫存及 JSON 匯出。
+- 靜態展示版不含管理密碼、不會把 AI 金鑰放進瀏覽器，也不會假裝已連接 AI。
+- 原有 Next.js／PostgreSQL／AI API 程式碼暫時保留在 Repository，供日後安全接入真正的 AI 後端；它不是 GitHub Pages 的執行部分。
+
+### 啟用 GitHub Pages
+
+首次啟用需在 GitHub Repository 設定一次：
+
+1. 開啟 Settings → Pages。
+2. 在 Build and deployment → Source 選擇 GitHub Actions。
+3. 儲存後，main 分支內 site/ 有更新時會自動部署。
+
+部署網址：https://annynn1990.github.io/wme-legislation-studio/ 。
+
+### 法律資料保存流程
+
+網站「資料管理」頁匯入的文字只暫存在當前分頁。按「下載 laws.json」後，檢查檔案，再更新 site/data/laws.json 並 Commit，才會成為正式資料。這個流程不需要將 GitHub Token 暴露在公開前端。
+
+> 注意：目前範例《首都論壇帖務條例》沿用示例原文，效力狀態設為「待核實」。展示版的立法研究只執行條文關鍵字檢索，不會把命中結果宣稱為 AI 分析、法規衝突判定或全庫完整審計。
