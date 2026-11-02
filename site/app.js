@@ -131,6 +131,37 @@ function bind(){
  el("import-status").addEventListener("change",function(){updateArticlePreview();});
  updateConnectionStatus();updateArticlePreview();
 }
-async function init(){bind();try{var r=await fetch("./data/laws.json",{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);var d=await r.json();laws=Array.isArray(d)?d:(Array.isArray(d.laws)?d.laws:[]);selectedLawId=laws.length?laws[0].id:null;refresh();}catch(e){el("overview-law-list").innerHTML='<div class="overview-empty">法律資料讀取失敗。請確認 site/data/laws.json 存在，並透過 GitHub Pages 網址開啟本頁。</div>';toast("法律資料載入失敗。");console.error(e);}}
+async function loadLawData(){
+ var version="20261102-fix1";
+ var candidates=[
+  "/wme-legislation-studio/data/laws.json?v="+version,
+  new URL("./data/laws.json?v="+version,document.baseURI).href,
+  "https://raw.githubusercontent.com/annynn1990/wme-legislation-studio/main/site/data/laws.json? v="+version
+ ];
+ var errors=[];
+ for(var i=0;i<candidates.length;i++){
+  try{
+   var response=await fetch(candidates[i].replace("? v=","?v="),{cache:"no-store",headers:{"Accept":"application/json"}});
+   if(!response.ok){errors.push(response.status+" "+candidates[i]);continue;}
+   var data=await response.json();
+   if(!data||(!Array.isArray(data)&&!Array.isArray(data.laws)))throw new Error("JSON 格式不包含 laws 陣列");
+   return Array.isArray(data)?data:data.laws;
+  }catch(error){errors.push(String(error&&error.message?error.message:error));}
+ }
+ throw new Error(errors.join("；"));
+}
+async function init(){
+ try{
+  bind();
+  laws=await loadLawData();
+  selectedLawId=laws.length?laws[0].id:null;
+  refresh();
+ }catch(e){
+  var target=el("overview-law-list");
+  if(target)target.innerHTML='<div class="overview-empty">法律資料暫時無法載入。請重新整理頁面；若問題持續，請聯絡網站管理員。</div>';
+  toast("法律資料載入失敗。");
+  console.error("WME law data load failed:",e);
+ }
+}
 init();
 })();
